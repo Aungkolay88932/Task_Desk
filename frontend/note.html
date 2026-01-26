@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegant Note</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Task Desk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="note.css">
 </head>
@@ -27,64 +27,48 @@
             </ul>
         </nav>
     </header>
+
     <div class="container">
-         
-
-        <section class="controls">
-            <input type="text" id="search-input" placeholder="Search notes...">
-            <select id="filter-select">
+        <h1 class="main-title">Quick Notes</h1>
+        
+        <div class="controls">
+            <input type="text" id="search-input" placeholder="Search..." onkeyup="searchNotes()">
+            <select id="filter-select" onchange="renderNotes()">
                 <option value="all">All Tags</option>
-                <option value="work">Work</option>
-                <option value="personal">Personal</option>
-                <option value="ideas">Ideas</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Ideas">Ideas</option>
             </select>
-            <button id="add-note-btn" class="btn-main"><i class="fas fa-plus"></i> Add Note</button>
-        </section>
-
-        <div id="notes-container" class="notes-grid">
-            </div>
-
-        <div id="empty-state" class="empty-state">
-            <i class="fas fa-sticky-note"></i>
-            <h3>No notes yet</h3>
-            <p>Click "Add Note" to get started!</p>
+            <button id="add-note-btn" class="btn-main">+ Add Note</button>
         </div>
+
+        <div id="notes-container" class="notes-grid"></div>
     </div>
 
-    <div id="add-note-modal" class="modal-overlay">
+    <div id="note-modal" class="modal-overlay">
         <div class="modal-body">
+            <h2>Note Details</h2>
             <form id="note-form">
+                <input type="hidden" id="edit-id">
                 <label>Title</label>
                 <input type="text" id="note-title" required>
-                
                 <label>Description</label>
-                <textarea id="note-content" rows="6" required></textarea>
+                <textarea id="note-content" rows="4" required></textarea>
 
-                <div class="tags-container">
-                    <label><input type="radio" name="note-tag" value="work" checked> Work</label>
-                    <label><input type="radio" name="note-tag" value="personal"> Personal</label>
-                    <label><input type="radio" name="note-tag" value="ideas"> Ideas</label>
+                <label>Select Tag</label>
+                <div class="tag-selection">
+                    <label><input type="radio" name="note-tag" value="Work" checked> Work</label>
+                    <label><input type="radio" name="note-tag" value="Personal"> Personal</label>
+                    <label><input type="radio" name="note-tag" value="Ideas"> Ideas</label>
                 </div>
 
                 <div class="modal-buttons">
                     <button type="button" id="close-modal" class="cancel-btn">Cancel</button>
-                    <button type="submit" class="submit-btn">Save Note</button>
+                    <button type="submit" class="save-btn">Save Note</button>
                 </div>
             </form>
         </div>
     </div>
-
-    <div id="confirm-modal" class="modal-overlay">
-        <div class="modal-body confirm-box">
-            <h3>Delete Note?</h3>
-            <p>Are you sure you want to remove this note permanently?</p>
-            <div class="modal-buttons">
-                <button id="cancel-delete" class="cancel-btn">No, Keep it</button>
-                <button id="confirm-delete" class="delete-btn">Yes, Delete</button>
-            </div>
-        </div>
-    </div>
-
     <script src="note.js"></script>
 </body>
 </html>
