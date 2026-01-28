@@ -9,25 +9,41 @@
     <link rel="stylesheet" href="note.css">
 </head>
 <body>
-     <header>
+    <header>
         <nav class="navbar">
             <a href="#" class="nav-logo">
                 <h2 class="logo-text">Task Desk</h2>
             </a>
+            
             <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="home.html" class="nav-link">Home</a>
+                <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                
+                <li class="nav-item" style="position: relative;">
+                    <img src="image/default-avatar.png" id="nav-profile-img" onclick="toggleDropdown()" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #5E7161; cursor: pointer;">
+                    
+                    <div id="profile-dropdown" class="profile-popup">
+                        <div class="popup-header">
+                            <div class="avatar-edit-box">
+                                <img src="image/default-avatar.png" id="dropdown-avatar-preview">
+                                <label for="upload-photo" class="camera-badge"><i class="fas fa-camera"></i></label>
+                                <input type="file" id="upload-photo" hidden accept="image/*">
+                            </div>
+                            <h3 id="display-username">Hi, User!</h3>
+                        </div>
+                        <div class="popup-body">
+                            <button type="button" class="popup-btn" onclick="changeUsername()">
+                                <i class="fas fa-edit"></i> Change Name
+                            </button>
+                            <button type="button" class="popup-btn logout-btn" onclick="confirmLogout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="contact.html" class="nav-link">Contact</a>
-                </li>
-                <li class="nav-item">
-                <button type="button" class="nav-btn" onclick="confirmLogout()">Logout</button>
-                </li>             
-            </ul>
+                </ul>
         </nav>
     </header>
-
     <div class="container">
         <h1 class="main-title">Quick Notes</h1>
         
