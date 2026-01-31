@@ -1,4 +1,4 @@
 <?php
-session_start();
+require_once __DIR__ . '/init_session.php';
 session_destroy();
-header("Location: /Task_Desk/frontend/register.html");
+header("Location: /taskdesk/frontend/login.html");

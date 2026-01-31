@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../connect/check_auth.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,17 +15,16 @@
             </a>
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="home.html" class="nav-link">Home</a>
+                    <a href="/taskdesk/frontend/home.php" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="contact.html" class="nav-link">Contact</a>
+                    <a href="/taskdesk/frontend/contact.php" class="nav-link">Contact</a>
                 </li>
                 <li class="nav-item">
-                <button type="button" class="nav-btn" onclick="confirmLogout()">Logout</button>
+                <a href="/taskdesk/connect/logout.php" class="nav-btn" onclick="return confirm('Are you sure do you want to log out?')">Logout</a>
                 </li>             
             </ul>
         </nav>
-    </header>
     </header>
     <div class="container">
 

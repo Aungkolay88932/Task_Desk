@@ -3,16 +3,16 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-session_start();
-require "config.php";
+require_once __DIR__ . '/init_session.php';
+require_once __DIR__ . '/db_connect.php';
 
 $client_id = getenv('GOOGLE_CLIENT_ID');
 $client_secret = getenv('GOOGLE_CLIENT_SECRET');
-$redirect_uri = "http://localhost/Task_Desk/connect/google_callback.php";
+$redirect_uri = "http://localhost/taskdesk/connect/google_callback.php";
 
 // 如果没有 code，跳回登录
 if (!isset($_GET['code'])) {
-    header("Location: /Task_Desk/connect/google_login.php");
+    header("Location: /taskdesk/connect/google_login.php");
     exit;
 }
 
@@ -106,12 +106,9 @@ if ($result->num_rows === 0) {
     }
 }
 
-/* 4️⃣ 登录成功 → 写入 session */
+/* 4️⃣ 登录成功 → 写入 session（与 login.php 一致，只存 uid / user_name） */
 $_SESSION['uid'] = $user_id;
-$_SESSION['email'] = $email;
 $_SESSION['user_name'] = $name;
-$_SESSION['access_token'] = $access_token;
-$_SESSION['token_created'] = time();
 
-header("Location: /Task_Desk/frontend/home.html");
+header("Location: /taskdesk/frontend/home.php");
 exit;

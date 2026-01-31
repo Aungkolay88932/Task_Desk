@@ -1,11 +1,6 @@
 <?php
-session_start();
-require_once "../connect/db_connect.php";
-
-if (!isset($_SESSION['uid'])) {
-    header("Location: login.php");
-    exit;
-}
+require_once __DIR__ . '/../connect/check_auth.php';
+require_once __DIR__ . '/../connect/db_connect.php';
 
 $uid = $_SESSION['uid'];
 
@@ -51,13 +46,13 @@ $notes = $stmt->get_result();
         </a>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="home.php" class="nav-link">Home</a>
+                <a href="/taskdesk/frontend/home.php" class="nav-link">Home</a>
             </li>
             <li class="nav-item">
-                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="/taskdesk/frontend/contact.php" class="nav-link">Contact</a>
             </li>
             <li class="nav-item">
-                <form method="post" action="../connect/logout.php">
+                <form method="post" action="/taskdesk/connect/logout.php">
                     <button type="submit" class="nav-btn">Logout</button>
                 </form>
             </li>

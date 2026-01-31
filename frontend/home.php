@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../connect/check_auth.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,13 +15,13 @@
             </a>
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="home.html" class="nav-link">Home</a>
+                    <a href="/taskdesk/frontend/home.php" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="contact.html" class="nav-link">Contact</a>
+                    <a href="/taskdesk/frontend/contact.php" class="nav-link">Contact</a>
                 </li>
                 <li class="nav-item">
-                <button type="button" class="nav-btn" onclick="confirmLogout()">Logout</button>
+                <a href="/taskdesk/connect/logout.php" class="nav-btn" onclick="return confirm('Are you sure do you want to log out?')">Logout</a>
                 </li>             
             </ul>
         </nav>
@@ -30,24 +31,21 @@
             <img src="image/note.jpg" alt="">
             <div class="card-content">
                 <p>Your Task Desk is ready type your first note here to get started</p>
-                <!-- <a href="note.html" class="btn">Note</a> -->
-                 <button type="button" class="btn" onclick="window.location.href='note.php';">Note</button>
+                 <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/note.php';">Note</button>
             </div>
         </div>
          <div class="card">
             <img src="image/balance.jpg" alt="">
             <div class="card-content">
                 <p>Total your costs and balance your budget in one click</p>
-                <!-- <a href="" class="btn">Balance</a> -->
-                 <button type="button" class="btn" onclick="window.location.href='calc.html';">Balance</button>
+                 <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/calc.php';">Balance</button>
             </div>
         </div>
          <div class="card">
             <img src="image/remain.jpg" alt="">
             <div class="card-content">
                 <p>Set it and forget it Task Desk will remind you when it's time</p>
-                <!-- <a href="" class="btn">Reaminder</a> -->
-                <button type="button" class="btn" onclick="window.location.href='remainder.html';">Reaminder</button>
+                <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/remainder.php';">Reaminder</button>
             </div>
         </div>  
     </div>
@@ -83,21 +81,6 @@
             </div>
         </div>
     </footer>
-    <script src="home.js">
-        // Logout confirmation function
-function confirmLogout() {
-    // Show confirmation dialog
-    const result = confirm("Are you sure do you want to log out?");
-    
-    // If user clicks OK (true), redirect to login page
-    if (result) {
-        window.location.href = "login.html";
-    }
-    // If user clicks Cancel (false), nothing happens - alert box closes automatically
-}
-
-    </script>
-    
+    <script src="home.js"></script>
 </body>
-
 </html>

@@ -17,7 +17,7 @@ $emailStmt->store_result();
 if ($emailStmt->num_rows > 0) {
     echo "<script>
             alert('Email already Exist');
-            window.location.href='/Task_Desk/frontend/signup.html';
+            window.location.href='/taskdesk/frontend/signup.html';
           </script>";
     $emailStmt->close();
     $conn->close();
@@ -36,7 +36,7 @@ $userStmt->store_result();
 if ($userStmt->num_rows > 0) {
     echo "<script>
             alert('Username already exists, please choose another one');
-            window.location.href='/Task_Desk/frontend/signup.html';
+            window.location.href='/taskdesk/frontend/signup.html';
           </script>";
     $userStmt->close();
     $conn->close();
@@ -56,7 +56,7 @@ if ($insertStmt->execute()) {
     
      echo "<script>
             alert('Register Sucessfully');
-            window.location.href='/Task_Desk/frontend/login.html';
+            window.location.href='/taskdesk/frontend/login.html';
           </script>";
     $userStmt->close();
 

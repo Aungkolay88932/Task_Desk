@@ -1,8 +1,6 @@
 <?php
-session_start();
-
 $client_id = getenv('GOOGLE_CLIENT_ID');
-$redirect_uri = "http://localhost/Task_Desk/connect/google_callback.php";
+$redirect_uri = "http://localhost/taskdesk/connect/google_callback.php";
 $scope = "email profile";
 
 $params = [
