@@ -1,28 +1,28 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-    background:#F0F4F2;
+    background: #F0F4F2;
 }
-ul{
+ul {
     list-style: none;
 }
-a{
+a {
     text-decoration: none;
 }
-button{
+button {
     cursor: pointer;
     border: none;
     background: none;
 }
-img{
+img {
     width: 100%;
 }
-/*nav bar*/
 
-header .navbar{
-    display:flex;
+/* nav bar */
+header .navbar {
+    display: flex;
     padding: 20px;
     align-items: center;
     justify-content: space-between;
@@ -32,7 +32,7 @@ header .navbar{
     margin-top: 0;
     margin-bottom: 0;
 }
-.navbar .nav-logo .logo-text{
+.navbar .nav-logo .logo-text {
     color: #2D3436;
     font-size: 30px;
     font-weight: bold;
@@ -46,61 +46,141 @@ header .navbar{
     font-size: 20px;
     border-radius: 20px;
     transition: 0.3s ease;
-    
-    /* Important additions for the button tag */
-    border: none;       /* Removes default button border */
-    font-family: inherit; /* Ensures it uses the same font */
-    cursor: pointer;    /* Makes it feel like a link */
-    display: inline-block; 
-    line-height: normal; /* Fixes vertical text alignment */
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-block;
+    line-height: normal;
 }
-
-/* Apply hover effect to both */
 .navbar .nav-menu .nav-link:hover,
 .navbar .nav-menu .nav-btn:hover {
     background: #E9D5CA;
     color: #5E7161;
 }
-
-/* Ensure the list items are centered vertically */
 .navbar .nav-menu {
     display: flex;
-    align-items: center; /* This is the secret for vertical alignment */
+    align-items: center;
     gap: 20px;
     margin-right: 150px;
-    list-style: none; /* Removes the dots */
+    list-style: none;
 }
 
+/* profile popup */
+.profile-popup {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 250px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+.profile-popup.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+.avatar-edit-box {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px;
+}
+#dropdown-avatar-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+.camera-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #5E7161;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid white;
+}
+.popup-header h3 {
+    color: #2D3436;
+    font-size: 1rem;
+}
+.popup-body {
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+.popup-btn {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #333;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+.popup-btn:hover {
+    background: #5E7161;
+    color: white;
+}
+.logout-btn {
+    background: #fff1f1;
+    color: #d9534f;
+}
+.logout-btn:hover {
+    background: #d9534f;
+    color: white;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-.card-container{
+/* cards */
+.card-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 100px;
 }
-.card{
+.card {
     width: 325px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
     margin: 20px;
 }
-.card img{
+.card img {
     width: 100%;
     height: auto;
 }
-.card-content{
+.card-content {
     padding: 16px;
 }
-.card-content p{
+.card-content p {
     color: #2D3436;
     font-size: 15px;
     line-height: 1.3;
 }
-.card-content .btn{
+.card-content .btn {
     display: inline-block;
     padding: 8px 16px;
-    /* background-color:#C2BAB0; */
     background-color: #5E7161;
     text-decoration: none;
     border-radius: 4px;
@@ -111,26 +191,22 @@ header .navbar{
     text-align: center;
     transition: 0.3s ease;
 }
-.card-container .btn:hover{
- background: #E9D5CA;
-    color: #E9D5CA;
+.card-container .btn:hover {
+    background: #E9D5CA;
+    color: #5E7161;
 }
 
-
-/* Footer Styles */
+/* Footer */
 .footer {
     color: #5d4e37;
     padding: 40px 0 20px;
     border-top: 3px solid #deb887;
 }
-
 .footer-container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px;
 }
-
-/* Footer Content */
 .footer-content {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
@@ -139,19 +215,16 @@ header .navbar{
     padding-bottom: 2rem;
     border-bottom: 2px solid #e6d7c3;
 }
-
 .footer-brand h2 {
     font-size: 2rem;
     font-weight: bold;
     color: #8b4513;
     margin-bottom: 0.5rem;
 }
-
 .footer-brand p {
     color: #6b5b47;
     line-height: 1.6;
 }
-
 .footer-contact h3,
 .footer-features h3 {
     color: #8b4513;
@@ -159,53 +232,43 @@ header .navbar{
     margin-bottom: 1rem;
     font-weight: 600;
 }
-
 .contact-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     color: #6b5b47;
 }
-
 .contact-item i {
     color: #deb887;
     font-size: 1rem;
 }
-
 .contact-item a {
     color: #6b5b47;
     text-decoration: none;
     transition: color 0.3s ease;
 }
-
 .contact-item a:hover {
     color: #8b4513;
 }
-
 .footer-features ul {
     list-style: none;
 }
-
 .footer-features ul li {
     margin-bottom: 0.5rem;
     color: #6b5b47;
     padding-left: 1rem;
     position: relative;
 }
-
 .footer-features ul li::before {
     content: '•';
     color: #deb887;
     position: absolute;
     left: 0;
 }
-
-/* Footer Bottom */
 .footer-bottom {
     text-align: center;
     padding-top: 1rem;
 }
-
 .footer-bottom p {
     color: #6b5b47;
     font-size: 0.9rem;

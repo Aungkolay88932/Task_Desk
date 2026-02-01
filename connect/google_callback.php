@@ -6,8 +6,28 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/init_session.php';
 require_once __DIR__ . '/db_connect.php';
 
+$envFile = dirname(__DIR__) . '/.env';
+
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        if (strpos($line, '=') !== false) {
+            list($name, $value) = explode('=', $line, 2);
+            // 同时设置到环境变量和超级全局变量中，确保万无一失
+            putenv(trim($name) . "=" . trim($value));
+            $_ENV[trim($name)] = trim($value);
+        }
+    }
+} else {
+    // 如果报错，说明路径真的写错了，或者权限不足
+    die("无法找到 .env 文件，请检查路径: " . $envFile);
+}
+
 $client_id = getenv('GOOGLE_CLIENT_ID');
+
 $client_secret = getenv('GOOGLE_CLIENT_SECRET');
+
 $redirect_uri = "http://localhost/taskdesk/connect/google_callback.php";
 
 // 如果没有 code，跳回登录

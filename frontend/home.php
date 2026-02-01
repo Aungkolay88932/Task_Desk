@@ -4,52 +4,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="home.css">
-    <title>Document</title>
+    <title>Task Desk | Home</title>
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <a href="#" class="nav-logo">
+            <a href="/taskdesk/frontend/home.php" class="nav-logo">
                 <h2 class="logo-text">Task Desk</h2>
             </a>
+
             <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="/taskdesk/frontend/home.php" class="nav-link">Home</a>
+                <li class="nav-item"><a href="/taskdesk/frontend/home.php" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/taskdesk/frontend/contact.php" class="nav-link">Contact</a></li>
+
+                <li class="nav-item" style="position: relative;">
+                    <img src="image/logo.jpg" id="nav-profile-img" onclick="toggleDropdown()" alt="Profile" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #5E7161; cursor: pointer;">
+
+                    <div id="profile-dropdown" class="profile-popup">
+                        <div class="popup-header">
+                            <div class="avatar-edit-box">
+                                <img src="image/logo.jpg" id="dropdown-avatar-preview" alt="">
+                                <label for="upload-photo" class="camera-badge"><i class="fas fa-camera"></i></label>
+                                <input type="file" id="upload-photo" hidden accept="image/*">
+                            </div>
+                            <h3 id="display-username">Hi, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?>!</h3>
+                        </div>
+                        <div class="popup-body">
+                            <button type="button" class="popup-btn" onclick="changeUsername()">
+                                <i class="fas fa-edit"></i> Change Name
+                            </button>
+                            <button type="button" class="popup-btn logout-btn" onclick="confirmLogout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a href="/taskdesk/frontend/contact.php" class="nav-link">Contact</a>
-                </li>
-                <li class="nav-item">
-                <a href="/taskdesk/connect/logout.php" class="nav-btn" onclick="return confirm('Are you sure do you want to log out?')">Logout</a>
-                </li>             
             </ul>
         </nav>
     </header>
+
     <div class="card-container">
         <div class="card">
-            <img src="image/note.jpg" alt="">
+            <img src="image/note.jpg" alt="Notes">
             <div class="card-content">
-                <p>Your Task Desk is ready type your first note here to get started</p>
-                 <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/note.php';">Note</button>
+                <p>Your Task Desk is ready. Type your first note here to get started.</p>
+                <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/note.php';">Note</button>
             </div>
         </div>
-         <div class="card">
-            <img src="image/balance.jpg" alt="">
+        <div class="card">
+            <img src="image/balance.jpg" alt="Budget">
             <div class="card-content">
-                <p>Total your costs and balance your budget in one click</p>
-                 <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/calc.php';">Balance</button>
+                <p>Total your costs and balance your budget in one click.</p>
+                <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/calc.php';">Balance</button>
             </div>
         </div>
-         <div class="card">
-            <img src="image/remain.jpg" alt="">
+        <div class="card">
+            <img src="image/remain.jpg" alt="Reminders">
             <div class="card-content">
-                <p>Set it and forget it Task Desk will remind you when it's time</p>
-                <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/remainder.php';">Reaminder</button>
+                <p>Set it and forget it. Task Desk will remind you when it's time.</p>
+                <button type="button" class="btn" onclick="window.location.href='/taskdesk/frontend/remainder.php';">Reminder</button>
             </div>
-        </div>  
+        </div>
     </div>
-    <!-- Footer Section -->
+
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-content">
@@ -57,7 +76,6 @@
                     <h2>TaskDesk</h2>
                     <p>Your productivity companion for notes, calculations, and reminders.</p>
                 </div>
-
                 <div class="footer-contact">
                     <h3>Contact Us</h3>
                     <div class="contact-item">
@@ -65,7 +83,6 @@
                         <a href="mailto:taskdesk41@gmail.com">taskdesk41@gmail.com</a>
                     </div>
                 </div>
-
                 <div class="footer-features">
                     <h3>Features</h3>
                     <ul>
@@ -75,12 +92,12 @@
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <p>&copy; 2026 TaskDesk. All rights reserved.</p>
             </div>
         </div>
     </footer>
+
     <script src="home.js"></script>
 </body>
 </html>
