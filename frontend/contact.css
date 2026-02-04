@@ -1,12 +1,9 @@
 *{
-    padding: 0;
     margin: 0;
+    padding: 0;
     box-sizing: border-box;
-}
-body{
-    font-family: 'Outfit';
+    font-family: "Poppins", sans-serif;
     background:#F0F4F2;
-
 }
 ul{
     list-style: none;
@@ -22,6 +19,8 @@ button{
 img{
     width: 100%;
 }
+/*nav bar*/
+
 header .navbar{
     display:flex;
     padding: 20px;
@@ -38,7 +37,6 @@ header .navbar{
     font-size: 30px;
     font-weight: bold;
     margin-left: 200px;
-    text-decoration: none;
 }
 .navbar .nav-menu .nav-link,
 .navbar .nav-menu .nav-btn {
@@ -48,7 +46,6 @@ header .navbar{
     font-size: 20px;
     border-radius: 20px;
     transition: 0.3s ease;
-    text-decoration: none;
     
     /* Important additions for the button tag */
     border: none;       /* Removes default button border */
@@ -57,11 +54,116 @@ header .navbar{
     display: inline-block; 
     line-height: normal; /* Fixes vertical text alignment */
 }
+
 /* Apply hover effect to both */
 .navbar .nav-menu .nav-link:hover,
 .navbar .nav-menu .nav-btn:hover {
     background: #E9D5CA;
-    color: #F3E5AB;
+    color: #5E7161;
+}
+
+/* Ensure the list items are centered vertically */
+.navbar .nav-menu {
+    display: flex;
+    align-items: center; /* This is the secret for vertical alignment */
+    gap: 20px;
+    margin-right: 150px;
+    list-style: none; /* Removes the dots */
+}
+
+/*profile*/
+/* --- New Profile Popup Styles --- */
+
+.profile-popup {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 250px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+
+.profile-popup.active {
+    display: block; /* Show when toggled */
+    animation: fadeIn 0.3s ease;
+}
+
+.avatar-edit-box {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px;
+}
+
+#dropdown-avatar-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+.camera-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #5E7161;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+.popup-body {
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.popup-btn {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #333;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.popup-btn:hover {
+    background: #5E7161;
+    color: white;
+}
+
+.logout-btn {
+    background: #fff1f1;
+    color: #d9534f;
+}
+
+.logout-btn:hover {
+    background: #d9534f;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Ensure the list items are centered vertically */
@@ -106,7 +208,7 @@ header .navbar{
     outline: none;
     padding-left: 25px;
     font-weight: 500;
-    color: #666;
+    color: black;
     border-radius: 50px;
 }
 .contact-left textarea{
@@ -115,17 +217,17 @@ header .navbar{
     border-radius: 20px;
 }
 .contact-inputs:focus{
-    border: 2px solid #F3E5AB;
+    border: 2px solid black;
 }
 .contact-inputs::placeholder{
-    color: #a9a9a9;
+    color: gray;
 }
 .contact-left button{
     display: flex;
     align-items: center;
     padding: 15px 30px;
     font-size: 16px;
-    color: #fff;
+    color: black;
     gap: 10px;
     border: none;
     border-radius: 50px;
@@ -137,4 +239,35 @@ header .navbar{
 }
 .contact-right img{
     width: 500px;
+}
+/* 默认隐藏 */
+.profile-popup {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #fff;
+    width: 220px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    z-index: 999;
+}
+
+/* 打开状态 */
+.profile-popup.active {
+    display: block;
+}
+.profile-popup .popup-body button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    color: #333;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
 }

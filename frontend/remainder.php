@@ -5,27 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Entry Form</title>
-    <link rel="stylesheet" href="remainder.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
 </head>
-<body>
-     <header>
-        <nav class="navbar">
-            <a href="#" class="nav-logo">
-                <h2 class="logo-text">Task Desk</h2>
-            </a>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="/taskdesk/frontend/home.php" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/taskdesk/frontend/contact.php" class="nav-link">Contact</a>
-                </li>
-                <li class="nav-item">
-                <a href="/taskdesk/connect/logout.php" class="nav-btn" onclick="return confirm('Are you sure do you want to log out?')">Logout</a>
-                </li>             
-            </ul>
-        </nav>
-    </header>
+<body class="remainder-page">
+    <?php include __DIR__ . '/partials/nav.php'; ?>
     <div class="form-card">  
         <form>
             <div class="input-group">
@@ -60,13 +44,6 @@
             </div>
         </form>
     </div>
-    <script>
-    function confirmLogout() {
-        const result = confirm("Are you sure do you want to log out?");
-        if (result) {
-            window.location.href = "/taskdesk/connect/logout.php";
-        }
-    }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

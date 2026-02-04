@@ -35,30 +35,11 @@ $notes = $stmt->get_result();
     <title>Elegant Note</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link rel="stylesheet" href="note.css">
+    <link rel="stylesheet" href="app.css">
 </head>
-<body>
+<body class="note-page">
 
-<header>
-    <nav class="navbar">
-        <a href="#" class="nav-logo">
-            <h2 class="logo-text">Task Desk</h2>
-        </a>
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="/taskdesk/frontend/home.php" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item">
-                <a href="/taskdesk/frontend/contact.php" class="nav-link">Contact</a>
-            </li>
-            <li class="nav-item">
-                <form method="post" action="/taskdesk/connect/logout.php">
-                    <button type="submit" class="nav-btn">Logout</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-</header>
+<?php include __DIR__ . '/partials/nav.php'; ?>
 
 <div class="container">
 
@@ -108,7 +89,7 @@ $notes = $stmt->get_result();
     </div>
 </div>
 
-<script src="note.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>

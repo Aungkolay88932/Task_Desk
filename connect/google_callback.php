@@ -14,20 +14,16 @@ if (file_exists($envFile)) {
         if (strpos(trim($line), '#') === 0) continue;
         if (strpos($line, '=') !== false) {
             list($name, $value) = explode('=', $line, 2);
-            // 同时设置到环境变量和超级全局变量中，确保万无一失
-            putenv(trim($name) . "=" . trim($value));
-            $_ENV[trim($name)] = trim($value);
+            $name  = trim($name);
+            $value = trim($value);
+            putenv("$name=$value");
+            $_ENV[$name] = $value;
         }
     }
-} else {
-    // 如果报错，说明路径真的写错了，或者权限不足
-    die("无法找到 .env 文件，请检查路径: " . $envFile);
 }
 
 $client_id = getenv('GOOGLE_CLIENT_ID');
-
 $client_secret = getenv('GOOGLE_CLIENT_SECRET');
-
 $redirect_uri = "http://localhost/taskdesk/connect/google_callback.php";
 
 // 如果没有 code，跳回登录
@@ -76,7 +72,7 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 
 $user_info_response = curl_exec($ch);
 
-if(curl_errno($ch)){
+if (curl_errno($ch)) {
     curl_close($ch);
     die("<h3>Can't Get Google User Information</h3><p>Internet fail：" . htmlspecialchars(curl_error($ch)) . "</p>");
 }
@@ -84,13 +80,13 @@ if(curl_errno($ch)){
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-if($httpCode != 200){
+if ($httpCode != 200) {
     die("<h3>Can't Get Google User Information</h3><p>HTTP status: $httpCode</p>");
 }
 
 $user = json_decode($user_info_response, true);
 
-if(!$user || empty($user['email']) || empty($user['name'])){
+if (!$user || empty($user['email']) || empty($user['name'])) {
     die("<h3>Google return information not complete</h3><p>Cant login，pleas try again</p>");
 }
 

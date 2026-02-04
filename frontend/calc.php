@@ -5,27 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculation Page</title>
-    <link rel="stylesheet" href="calc.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
 </head>
-<body>
-  <header>
-        <nav class="navbar">
-            <a href="#" class="nav-logo">
-                <h2 class="logo-text">Task Desk</h2>
-            </a>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="/taskdesk/frontend/home.php" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/taskdesk/frontend/contact.php" class="nav-link">Contact</a>
-                </li>
-                <li class="nav-item">
-                <a href="/taskdesk/connect/logout.php" class="nav-btn" onclick="return confirm('Are you sure do you want to log out?')">Logout</a>
-                </li>             
-            </ul>
-        </nav>
-    </header>
+<body class="calc-page">
+    <?php include __DIR__ . '/partials/nav.php'; ?>
     <div class="container">
 
         <div class="input-section">
@@ -74,6 +58,6 @@
         </div>
     </div>
 
-    <script src="calc.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
