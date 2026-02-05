@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 19, 2026 at 04:16 PM
+-- Generation Time: Feb 05, 2026 at 03:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,6 +32,7 @@ CREATE TABLE `cost` (
   `uid` int(11) NOT NULL,
   `cost_name` varchar(100) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
+  `cost_date` date DEFAULT NULL,
   `created_cost_time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -74,18 +75,13 @@ CREATE TABLE `user_info` (
   `user_name` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `user_password` varchar(255) DEFAULT NULL,
-  `google_id` varchar(255) NOT NULL,
+  `google_id` varchar(255) DEFAULT NULL,
   `login_type` enum('normal','google') NOT NULL DEFAULT 'google',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `refresh_token` varchar(255) DEFAULT NULL
+  `refresh_token` varchar(255) DEFAULT NULL,
+  `avatar` longblob DEFAULT NULL,
+  `avatar_mime` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user_info`
---
-
-
-
 
 --
 -- Indexes for dumped tables
@@ -127,13 +123,13 @@ ALTER TABLE `user_info`
 -- AUTO_INCREMENT for table `cost`
 --
 ALTER TABLE `cost`
-  MODIFY `cost_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cost_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `Note`
 --
 ALTER TABLE `Note`
-  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reminder`
@@ -145,7 +141,7 @@ ALTER TABLE `reminder`
 -- AUTO_INCREMENT for table `user_info`
 --
 ALTER TABLE `user_info`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
@@ -169,11 +165,6 @@ ALTER TABLE `Note`
 ALTER TABLE `reminder`
   ADD CONSTRAINT `reminder_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user_info` (`uid`) ON DELETE CASCADE;
 COMMIT;
-
--- Add avatar columns to store profile image binary and mime type
-ALTER TABLE `user_info`
-  ADD COLUMN `avatar` LONGBLOB DEFAULT NULL,
-  ADD COLUMN `avatar_mime` varchar(255) DEFAULT NULL;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
