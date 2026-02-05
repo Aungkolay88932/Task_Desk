@@ -43,13 +43,23 @@ if (!$stmt) {
     exit;
 }
 
+
 $stmt->bind_param('si', $newName, $uid);
-if ($stmt->execute()) {
+$ok = $stmt->execute();
+$affected = $stmt->affected_rows;
+
+// Logging for diagnostics (rotate/cleanup manually as needed)
+$logLine = sprintf("%s | uid=%d | newName=%s | ok=%s | affected=%d | stmt_error=%s\n",
+    date('Y-m-d H:i:s'), $uid, str_replace("\n", ' ', $newName), $ok ? '1' : '0', $affected, $stmt->error ?? '');
+file_put_contents('/tmp/taskdesk_update_username.log', $logLine, FILE_APPEND | LOCK_EX);
+
+if ($ok) {
+    // If affected_rows is 0, it could be the same value or no change; still update session
     $_SESSION['user_name'] = $newName;
-    echo json_encode(['success' => true, 'user_name' => $newName]);
+    echo json_encode(['success' => true, 'user_name' => $newName, 'affected' => $affected]);
 } else {
     error_log('Execute failed: ' . $stmt->error);
-    echo json_encode(['success' => false, 'message' => 'Update failed']);
+    echo json_encode(['success' => false, 'message' => 'Update failed', 'error' => $stmt->error]);
 }
 
 $stmt->close();

@@ -53,8 +53,14 @@ $notes = $stmt->get_result();
     <div id="notes-container" class="notes-grid">
         <?php if ($notes->num_rows > 0): ?>
             <?php while ($row = $notes->fetch_assoc()): ?>
-                <div class="note-card">
-                    <h3><?= htmlspecialchars($row['title']) ?></h3>
+                <div class="note-card" data-note-id="<?= $row['note_id'] ?>">
+                    <div class="note-header">
+                        <h3><?= htmlspecialchars($row['title']) ?></h3>
+                        <div class="note-tools">
+                            <button type="button" class="edit-note" data-id="<?= $row['note_id'] ?>"><i class="fas fa-edit"></i></button>
+                            <button type="button" class="delete-note" data-id="<?= $row['note_id'] ?>"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
                     <p><?= nl2br(htmlspecialchars($row['content'])) ?></p>
                     <small><?= $row['created_at'] ?></small>
                 </div>
@@ -75,6 +81,7 @@ $notes = $stmt->get_result();
 <div id="add-note-modal" class="modal-overlay">
     <div class="modal-body">
         <form id="note-form">
+            <input type="hidden" id="note-id" name="note_id" value="">
             <label>Title</label>
             <input type="text" id="note-title" required>
 

@@ -39,12 +39,15 @@ if (!empty($_SESSION['uid'])) {
                             <label for="upload-photo" class="camera-badge"><i class="fas fa-camera"></i></label>
                             <input type="file" id="upload-photo" hidden accept="image/*">
                         </div>
-                        <h3 id="display-username"><?php echo $display_name; ?>!</h3>
+                        <h3 id="display-username"><?php echo $display_name; ?></h3>
                     </div>
                     <div class="popup-body">
-                        <button type="button" class="popup-btn" onclick="changeUsername()">
-                            <i class="fas fa-edit"></i> Change Name
-                        </button>
+                        <form id="change-name-form" style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+                            <input type="text" id="change-name-input" name="user_name" value="<?php echo $display_name; ?>" style="width: 120px; padding: 6px 10px; border-radius: 8px; border: 1px solid #d1d5db; font-size: 1rem; background: #f8fafc; color: #333;">
+                            <button type="submit" class="popup-btn" style="padding: 6px 14px; border-radius: 8px; background: #5E7161; color: #fff; font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 6px; border: none;">
+                                <i class="fas fa-edit"></i> Save
+                            </button>
+                        </form>
                         <button type="button" class="popup-btn logout-btn" onclick="confirmLogout()">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </button>

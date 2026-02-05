@@ -1,4 +1,6 @@
-<?php require_once __DIR__ . '/../connect/check_auth.php'; ?>
+<?php require_once __DIR__ . '/../connect/check_auth.php';
+$uid = $_SESSION['uid'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,10 +21,7 @@
                         <label>Item Name</label>
                         <input type="text" id="item-name">
                     </div>
-                    <div class="input-group">
-                        <label>Category</label>
-                        <input type="text" id="category">
-                    </div>
+                    
                 </div>
                 <div class="col">
                     <div class="input-group">
@@ -58,6 +57,9 @@
         </div>
     </div>
 
+    <script>
+        const uid = <?php echo json_encode($uid); ?>;
+    </script>
     <script src="app.js"></script>
 </body>
 </html>

@@ -12,28 +12,30 @@
         dropdown.classList.toggle('active');
     }
 
-    // Change display name (sends update to server)
-    function changeUsername() {
-        const newName = prompt('Enter your new name:');
-        if (!newName || newName.trim() === '') return;
-        const payload = { user_name: newName.trim() };
-
-        fetch('/taskdesk/connect/update_username.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            credentials: 'same-origin'
-        }).then(r => r.json()).then(data => {
-            if (data && data.success) {
-                const displayEl = qs('display-username');
-                if (displayEl) displayEl.innerText = data.user_name + '!';
-                try { localStorage.setItem('userName', data.user_name); } catch (e) {}
-                alert('Name updated');
-            } else {
-                alert('Update failed: ' + (data && data.message ? data.message : 'Unknown'));
-            }
-        }).catch(err => { console.error(err); alert('Update error'); });
-    }
+    // Minimal handler for change-name-form
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.getElementById('change-name-form');
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var input = document.getElementById('change-name-input');
+                var newName = input ? input.value.trim() : '';
+                if (!newName) return;
+                fetch('/taskdesk/connect/update_username.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_name: newName }),
+                    credentials: 'same-origin'
+                }).then(r => r.json()).then(data => {
+                    if (data && data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Update failed: ' + (data && data.message ? data.message : 'Unknown'));
+                    }
+                }).catch(() => alert('Update error'));
+            });
+        }
+    });
 
     // Confirm logout and redirect to server logout
     function confirmLogout() {
@@ -42,22 +44,6 @@
         }
     }
 
-    // Load saved avatar and name from localStorage (if present)
-    function loadLocalProfile() {
-        const savedImg = localStorage.getItem('userImage');
-        const savedName = localStorage.getItem('userName');
-
-        if (savedImg) {
-            const navImg = qs('nav-profile-img');
-            const dropImg = qs('dropdown-avatar-preview');
-            if (navImg) navImg.src = savedImg;
-            if (dropImg) dropImg.src = savedImg;
-        }
-        if (savedName) {
-            const displayEl = qs('display-username');
-            if (displayEl) displayEl.innerText = 'Hi, ' + savedName + '!';
-        }
-    }
 
     // Avatar upload: send to server endpoint and update previews
     function initAvatarUpload() {
@@ -125,20 +111,38 @@
             e.preventDefault();
             const title = qs('note-title') ? qs('note-title').value.trim() : '';
             const content = qs('note-content') ? qs('note-content').value.trim() : '';
+            const noteId = qs('note-id') ? qs('note-id').value.trim() : '';
             if (!title && !content) { alert('Please enter a title or content'); return; }
 
-            const fd = new FormData();
-            fd.append('action', 'add_note');
-            fd.append('title', title);
-            fd.append('content', content);
+            if (noteId) {
+                // update existing note
+                const payload = { note_id: parseInt(noteId, 10), title: title, content: content };
+                fetch('/taskdesk/connect/update_note.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    credentials: 'same-origin'
+                }).then(r => r.json()).then(data => {
+                    if (data && data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Update failed');
+                    }
+                }).catch(err => { console.error(err); alert('Update error'); });
+            } else {
+                const fd = new FormData();
+                fd.append('action', 'add_note');
+                fd.append('title', title);
+                fd.append('content', content);
 
-            fetch(window.location.href, { method: 'POST', body: fd, credentials: 'same-origin' })
-              .then(r => {
-                  if (r.ok) return r.text();
-                  throw new Error('Network response not ok');
-              }).then(() => {
-                  window.location.reload();
-              }).catch(err => { console.error(err); alert('Failed to save note'); });
+                fetch(window.location.href, { method: 'POST', body: fd, credentials: 'same-origin' })
+                  .then(r => {
+                      if (r.ok) return r.text();
+                      throw new Error('Network response not ok');
+                  }).then(() => {
+                      window.location.reload();
+                  }).catch(err => { console.error(err); alert('Failed to save note'); });
+            }
         });
 
         // search filter (debounced)
@@ -155,6 +159,42 @@
                 }, 200);
             });
         }
+
+            // Edit / Delete buttons (server-rendered notes)
+            document.querySelectorAll('.edit-note').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = btn.getAttribute('data-id');
+                    const card = btn.closest('.note-card');
+                    if (!card) return;
+                    const title = (card.querySelector('h3')||{innerText:''}).innerText.trim();
+                    const content = (card.querySelector('p')||{innerText:''}).innerText.trim();
+                    if (qs('note-id')) qs('note-id').value = id;
+                    if (qs('note-title')) qs('note-title').value = title;
+                    if (qs('note-content')) qs('note-content').value = content;
+                    modal.classList.add('active');
+                });
+            });
+
+            document.querySelectorAll('.delete-note').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = btn.getAttribute('data-id');
+                    if (!id) return;
+                    if (!confirm('Delete this note?')) return;
+                    const payload = { note_id: parseInt(id, 10) };
+                    fetch('/taskdesk/connect/delete_note.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                        credentials: 'same-origin'
+                    }).then(r => r.json()).then(data => {
+                        if (data && data.success) {
+                            window.location.reload();
+                        } else {
+                            alert('Delete failed');
+                        }
+                    }).catch(err => { console.error(err); alert('Delete error'); });
+                });
+            });
     }
 
     // --- Calculator page behavior (exposed globally for onclick handlers) ---
@@ -170,15 +210,28 @@
         const category = categoryEl ? categoryEl.value.trim() : '';
         const date = dateEl ? dateEl.value : '';
 
-        if (item && amount && date) {
-            const entry = { item, amount, category, date };
-            expenses.data.push(entry);
-            localStorage.setItem('myExpenses', JSON.stringify(expenses.data));
-            alert('Expense Added!');
-            clearInputs();
-        } else {
+        if (!(item && amount && date)) {
             alert('Please fill in all fields');
+            return;
         }
+
+        const fd = new FormData();
+        fd.append('name', item);
+        fd.append('price', amount);
+        fd.append('category', category);
+        fd.append('date', date);
+
+        fetch('/taskdesk/connect/save_cost.php', { method: 'POST', body: fd, credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(data => {
+                if (data && data.success) {
+                    alert('Expense Added!');
+                    clearInputs();
+                    displayAll();
+                } else {
+                    alert('Save failed: ' + (data && data.message ? data.message : 'Unknown'));
+                }
+            }).catch(err => { console.error(err); alert('Network error'); });
     }
 
     function clearInputs() {
@@ -190,23 +243,54 @@
 
     function displayAll() {
         const screen = qs('display-screen'); if (!screen) return;
-        screen.innerHTML = '<h3 style="background-color: white;">All Records:</h3><br>';
-        expenses.data.forEach(ex => {
-            screen.innerHTML += `<p style="background-color: white;">${new Date(ex.date).toLocaleDateString()} - ${ex.item}: $${ex.amount} (${ex.category})</p>`;
-        });
+        const footerDate = qs('footer-date');
+        const date = footerDate && footerDate.value ? footerDate.value : '';
+        const url = '/taskdesk/connect/fetch_cost.php?type=all' + (date ? '&date=' + encodeURIComponent(date) : '');
+        screen.innerHTML = '<p>Loading...</p>';
+        fetch(url, { credentials: 'same-origin' }).then(r => r.json()).then(rows => {
+            if (!rows || rows.length === 0) {
+                screen.innerHTML = '<p>No records</p>';
+                return;
+            }
+
+            // Render results in a table for the calculate page
+            let html = `<table class="cost-table" style="width:100%;background:white;padding:10px;border-radius:8px; border-collapse: collapse;">
+                <thead>
+                    <tr style="text-align:left;">
+                        <th style="padding:8px;border-bottom:1px solid #eee;">Date</th>
+                        <th style="padding:8px;border-bottom:1px solid #eee;">Item</th>
+                        <th style="padding:8px;border-bottom:1px solid #eee;">Price</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            let total = 0;
+            rows.forEach(row => {
+                const d = new Date(row.cost_date);
+                total += Number(row.price || 0);
+                html += `<tr>
+                    <td style="padding:8px;border-bottom:1px solid #f3f3f3;">${d.toLocaleDateString()}</td>
+                    <td style="padding:8px;border-bottom:1px solid #f3f3f3;">${escapeHtml(row.cost_name)}</td>
+                    <td style="padding:8px;border-bottom:1px solid #f3f3f3;">$${Number(row.price).toFixed(2)}</td>
+                </tr>`;
+            });
+
+            html += `</tbody></table><div style="margin-top:12px;text-align:right;font-weight:700;">Total: $${total.toFixed(2)}</div>`;
+            screen.innerHTML = html;
+        }).catch(err => { console.error(err); screen.innerHTML = '<p>Error loading data</p>'; });
     }
 
     function calculateTotal(period) {
         const screen = qs('display-screen'); if (!screen) return;
-        const today = new Date();
-        let total = 0;
-        expenses.data.forEach(ex => {
-            const exDate = new Date(ex.date);
-            if (period === 'day' && exDate.toDateString() === today.toDateString()) total += ex.amount;
-            else if (period === 'month' && exDate.getMonth() === today.getMonth() && exDate.getFullYear() === today.getFullYear()) total += ex.amount;
-            else if (period === 'week' && (today - exDate) / (1000 * 60 * 60 * 24) <= 7) total += ex.amount;
-        });
-        screen.innerHTML = `<h2 style="background-color: white;">${period.toUpperCase()} TOTAL</h2><hr><br><h1 style="font-size:4rem; background-color: white;">$${total.toFixed(2)}</h1>`;
+        const footerDate = qs('footer-date');
+        const date = footerDate && footerDate.value ? footerDate.value : '';
+        const url = '/taskdesk/connect/fetch_cost.php?type=' + encodeURIComponent(period) + (date ? '&date=' + encodeURIComponent(date) : '');
+        screen.innerHTML = '<p>Loading...</p>';
+        fetch(url, { credentials: 'same-origin' }).then(r => r.json()).then(rows => {
+            let total = 0;
+            rows.forEach(row => { total += Number(row.price || 0); });
+            screen.innerHTML = `<h2 style="background-color: white;">${period.toUpperCase()} TOTAL</h2><hr><br><h1 style="font-size:4rem; background-color: white;">$${total.toFixed(2)}</h1>`;
+        }).catch(err => { console.error(err); screen.innerHTML = '<p>Error calculating total</p>'; });
     }
 
     function cleardata() {
@@ -214,9 +298,14 @@
         if (qs('item-name')) qs('item-name').value = '';
         if (qs('amount')) qs('amount').value = '';
         if (qs('category')) qs('category').value = '';
-        if (qs('date')) qs('date').value = '';
+        if (qs('date-input')) qs('date-input').value = '';
         const footerDate = qs('footer-date'); if (footerDate) footerDate.value = '';
         console.log('All data cleared and screen is now empty.');
+    }
+
+    // simple escape to avoid HTML injection in table
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>\"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
     }
 
     // expose calc functions globally for inline handlers in HTML
@@ -227,15 +316,17 @@
 
     // expose shared functions globally for HTML onclick attributes
     window.toggleDropdown = toggleDropdown;
-    window.changeUsername = changeUsername;
     window.confirmLogout = confirmLogout;
 
     // initialize on DOM ready
     document.addEventListener('DOMContentLoaded', () => {
-        loadLocalProfile();
         initAvatarUpload();
         initDropdownBehavior();
         initNotes();
+        // If on calculation page, load all data immediately
+        if (document.body && document.body.classList.contains('calc-page')) {
+            try { displayAll(); } catch (e) { console.error(e); }
+        }
     });
 
 })();
