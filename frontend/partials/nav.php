@@ -1,5 +1,23 @@
 <?php
 // Reusable navigation partial. Assumes session is started and user authenticated if needed.
+// Fetch fresh username from DB to ensure updates are reflected immediately.
+require_once __DIR__ . '/../../connect/db_connect.php';
+// If session uid is available, query the DB for the latest user_name
+$display_name = 'User';
+if (!empty($_SESSION['uid'])) {
+    $uid = intval($_SESSION['uid']);
+    $stmt = $conn->prepare('SELECT user_name FROM user_info WHERE uid = ? LIMIT 1');
+    if ($stmt) {
+        $stmt->bind_param('i', $uid);
+        if ($stmt->execute()) {
+            $res = $stmt->get_result();
+            if ($row = $res->fetch_assoc()) {
+                $display_name = htmlspecialchars($row['user_name']);
+            }
+        }
+        $stmt->close();
+    }
+}
 ?>
 <header>
     <nav class="navbar">
@@ -21,7 +39,7 @@
                             <label for="upload-photo" class="camera-badge"><i class="fas fa-camera"></i></label>
                             <input type="file" id="upload-photo" hidden accept="image/*">
                         </div>
-                        <h3 id="display-username"><?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?>!</h3>
+                        <h3 id="display-username"><?php echo $display_name; ?>!</h3>
                     </div>
                     <div class="popup-body">
                         <button type="button" class="popup-btn" onclick="changeUsername()">

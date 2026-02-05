@@ -12,14 +12,27 @@
         dropdown.classList.toggle('active');
     }
 
-    // Change display name (local only)
+    // Change display name (sends update to server)
     function changeUsername() {
         const newName = prompt('Enter your new name:');
-        if (newName && newName.trim() !== '') {
-            try { localStorage.setItem('userName', newName); } catch (e) {}
-            const displayEl = qs('display-username');
-            if (displayEl) displayEl.innerText = 'Hi, ' + newName + '!';
-        }
+        if (!newName || newName.trim() === '') return;
+        const payload = { user_name: newName.trim() };
+
+        fetch('/taskdesk/connect/update_username.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            credentials: 'same-origin'
+        }).then(r => r.json()).then(data => {
+            if (data && data.success) {
+                const displayEl = qs('display-username');
+                if (displayEl) displayEl.innerText = data.user_name + '!';
+                try { localStorage.setItem('userName', data.user_name); } catch (e) {}
+                alert('Name updated');
+            } else {
+                alert('Update failed: ' + (data && data.message ? data.message : 'Unknown'));
+            }
+        }).catch(err => { console.error(err); alert('Update error'); });
     }
 
     // Confirm logout and redirect to server logout
