@@ -238,17 +238,137 @@ body.contact-page .contact-left button{ display:flex; align-items:center; paddin
 body.contact-page .contact-right img{ width:500px; }
 
 /* =========================
-   Remainder page styles
+   Remainder page styles (from reminder.zip)
    ========================= */
-body.remainder-page .form-card { width:80%; max-width:450px; padding:30px; margin-left:30%; height:300px; }
-body.remainder-page .input-group { margin-bottom:20px; display:flex; flex-direction:column; }
-body.remainder-page .row { display:flex; gap:20px; }
-body.remainder-page label { color:#7d6b6b; font-size:1.2rem; font-weight:400; margin-bottom:10px; margin-left:15px; }
-body.remainder-page input, body.remainder-page textarea { background-color:#7a7575; border:none; border-radius:30px; padding:18px 25px; font-size:1rem; color:#4a2a4a; outline:none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.03); }
-body.remainder-page textarea { border-radius:30px; resize:vertical; }
-body.remainder-page .button-container { display:flex; justify-content:flex-end; gap:15px; margin-top:25px; }
-body.remainder-page .btn-cancel { background-color:#e0d0c0; color:#4a2a4a; padding:15px 35px; border-radius:35px; font-size:1.2rem; font-weight:bold; cursor:pointer; }
-body.remainder-page .btn-save { background: linear-gradient(to right,#e67e5a,#d45d3a); color:white; padding:15px 45px; border-radius:35px; font-size:1.2rem; font-weight:bold; cursor:pointer; box-shadow:0 4px 15px rgba(230,126,90,0.3); }
+
+/* Step 4: Container */
+.container {
+    max-width: 1000px;
+    margin: 10px auto;
+    padding: 0 20px;
+}
+
+.main-title { font-size: 32px; margin-bottom: 25px; }
+
+/* Step 5: Search & Button */
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.controls input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+/* Make form controls in remainder match other pages (override broad rules) */
+body.remainder-page .container input,
+body.remainder-page .container textarea,
+body.remainder-page .container select {
+    background: #fff;
+    color: #2d3436;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+}
+body.remainder-page .controls input { padding: 12px; }
+
+.btn-main {
+    background: #222;
+    color: white;
+    padding: 0 25px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Step 6: Reminder Cards Grid */
+.reminders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.reminder-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+    border: 1px solid #eee;
+    word-wrap: break-word;
+}
+
+.reminder-card h3 { font-size: 18px; margin-bottom: 8px; padding-right: 50px; }
+
+.reminder-card p { font-size: 14px; color: #666; margin-bottom: 10px; }
+
+.reminder-card .time-info {
+    font-size: 12px;
+    background: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    color: #555;
+}
+
+.reminder-tools {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.reminder-tools i { cursor: pointer; color: #ccc; }
+.fa-pencil-alt:hover { color: #5E7161; }
+.fa-times:hover { color: #ff4d4d; }
+
+/* Step 7: Modal (White Design) */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-body {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 450px;
+}
+
+.modal-body label { display: block; margin-top: 15px; font-weight: 600; font-size: 14px; }
+
+.modal-body input, .modal-body textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.row { display: flex; gap: 10px; }
+.input-half { flex: 1; }
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.save-btn { background: #5E7161; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+.cancel-btn { background: #eee; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
 
 /* small helpers */
 .hidden { display: none !important; }

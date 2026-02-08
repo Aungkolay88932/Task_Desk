@@ -327,6 +327,55 @@
         if (document.body && document.body.classList.contains('calc-page')) {
             try { displayAll(); } catch (e) { console.error(e); }
         }
+
+        // --- Reminder page behavior: browser notifications polling ---
+        if (document.body && document.body.classList.contains('remainder-page')) {
+            if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission !== 'granted') {
+                try { Notification.requestPermission(); } catch (e) { console.warn('Notification permission request failed', e); }
+            }
+
+            function checkReminders() {
+                fetch('/taskdesk/connect/reminder_noti.php', { credentials: 'same-origin' })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (!data || !Array.isArray(data)) return;
+                        data.forEach(r => {
+                            try { showReminderNotification(r.reminder_title || r.reminder_title); } catch (e) { console.error(e); }
+                        });
+                    }).catch(err => console.error('Reminder fetch error', err));
+            }
+
+            function showReminderNotification(body) {
+                if (!('Notification' in window)) return;
+                if (Notification.permission !== 'granted') return;
+                try {
+                    new Notification('Task Desk Reminder', { body: String(body), icon: '/taskdesk/frontend/image/logo.jpg' });
+                } catch (e) { console.error('Show notification failed', e); }
+            }
+
+            // run immediately and poll every 60s
+            try { checkReminders(); } catch (e) { console.error(e); }
+            setInterval(() => { try { checkReminders(); } catch (e) {} }, 60000);
+
+            // Search/filter reminders (used by onkeyup in markup)
+            window.searchReminders = function () {
+                const term = (document.getElementById('search-input')?.value || '').toLowerCase();
+                document.querySelectorAll('.reminder-card').forEach(card => {
+                    const title = (card.querySelector('h3') || { innerText: '' }).innerText.toLowerCase();
+                    card.style.display = title.includes(term) ? 'block' : 'none';
+                });
+            };
+            // wire input event for live search
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) searchInput.addEventListener('input', () => { try { window.searchReminders(); } catch (e) {} });
+
+            // Modal open/close
+            const modal = document.getElementById('reminder-modal');
+            const addBtn = document.getElementById('add-reminder-btn');
+            const closeBtn = document.getElementById('close-modal');
+            if (addBtn && modal) addBtn.addEventListener('click', () => modal.classList.add('active'));
+            if (closeBtn && modal) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+        }
     });
 
 })();
